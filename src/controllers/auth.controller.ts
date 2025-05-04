@@ -1,6 +1,6 @@
 import type { Response, Request } from "express"
 import User from "../models/User";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
 import { JWT_SECRET } from "../config/constants"
 
@@ -12,6 +12,7 @@ export const signIn = async (req: Request, res: Response) => {
         res.status(400).json({ message: "Username or password is incorrect" });
         return;
     }
+
 
     const result = await bcrypt.compare(password, existingUser.password);
 
