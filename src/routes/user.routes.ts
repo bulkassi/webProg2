@@ -12,6 +12,7 @@ const router = Router();
  *     summary: Get all users
  *     description: Retrieves a list of all users from the database
  *     tags: [Users]
+ *     security: [{ bearerAuth: []}]
  *     responses:
  *       201:
  *         description: List of users retrieved successfully
@@ -54,6 +55,7 @@ router.get("/", getAuthMiddleware([UserRoles.admin, UserRoles.moderator]), getUs
  *     summary: Create a new user
  *     description: Creates a new user with the provided username, email, and password.
  *     tags: [Users]
+ *     security: [{ bearerAuth: []}]
  *     requestBody:
  *       required: true
  *       content:
@@ -120,9 +122,9 @@ router.post("/", createUser);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [userID]
+ *             required: [userId]
  *             properties:
- *               userID:
+ *               userId:
  *                 type: string
  *                 example: "64f3b2c4e4b0a1d2c8e4f3b2"
  *     responses:
@@ -171,14 +173,21 @@ router.delete("/", getAuthMiddleware([UserRoles.admin]), deleteUser);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [username, email]
+ *             required: [userId]
  *             properties:
+ *               userId:
+ *                 type: string
+ *                 example: "64f3b2c4e4b0a1d2c8e4f3b2"
  *               username:
  *                 type: string
  *                 example: "UpdatedName"
  *               email:
  *                 type: string
  *                 example: "updated@email.com"
+ *               role:
+ *                 type: string
+ *                 enum: [user, moderator, admin]
+ *                 example: "user"
  *     responses:
  *       200:
  *         description: User updated successfully
@@ -187,12 +196,18 @@ router.delete("/", getAuthMiddleware([UserRoles.admin]), deleteUser);
  *             schema:
  *               type: object
  *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: "64f3b2c4e4b0a1d2c8e4f3b2"
  *                 username:
  *                   type: string
  *                   example: "UpdatedName"
  *                 email:
  *                   type: string
  *                   example: "updated@email.com"
+ *                 role:
+ *                   type: string
+ *                   example: "user"
  *       404:
  *         description: User not found
  *         content:

@@ -35,7 +35,7 @@ const router = Router();
  *               password:
  *                 type: string
  *                 format: password
- *                 example: "vasypupkin"
+ *                 example: "vasyapupkin"
  *               role:
  *                 type: string
  *                 default: user
