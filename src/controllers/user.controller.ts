@@ -1,5 +1,7 @@
 import User from "../models/User";
 import type { Response, Request } from "express";
+import jwt from "jsonwebtoken"
+import { JWT_SECRET } from "../config/constants"
 
 export const createUser = async (req: Request, res: Response) => {
     try {
@@ -22,13 +24,27 @@ export const getUsers = async (req: Request, res: Response) => {
 }
 
 export const deleteUser = async (req: Request, res: Response) => {
-    const { userId } = req.body;
+    const authHeader = req.headers.authorization
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        res.status(401).json({ message: "Authorization required" });
+        return;
+    }
+
+    const token = authHeader.split(" ")[1];
+
     try {
-        const deleteUser = await User.findByIdAndDelete(userId);
-        if (!deleteUser) {
-            res.status(404).json({ message: "user not found" });
-        }
-        res.status(200).json(deleteUser);
+        const decoded = jwt.verify(token, JWT_SECRET);
+        console.log(decoded);
+    } catch (e) {
+        res.status(401).json({ message: "Invalid token" });
+        return;
+    }
+
+    try {
+        console.log(req.body);
+        const result = await User.deleteOne(req.body);
+        res.status(201).json(result);
     } catch (e) {
         res.status(400).json({ message: (e as Error).message })
     }

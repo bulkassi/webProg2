@@ -5,11 +5,17 @@ const router = Router();
 
 /**
  * @swagger
+ *   tags:
+ *     name: Auth
+ *     description: User authentification
+ */
+
+/**
+ * @swagger
  * /auth/sign-up:
  *   post:
  *     summary: Registring a new user
- *     tags:
- *       - Authentification
+ *     tags: [Auth]
  *     description: Creates a new user in the database
  *     requestBody:
  *       required: true
@@ -17,19 +23,23 @@ const router = Router();
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - username
- *               - email
- *               - password
+ *             required: [username, email, password]
  *             properties:
  *               username:
  *                 type: string
+ *                 example: "Pupkin"
  *               email:
  *                 type: string
  *                 format: email
+ *                 example: "pupkin@email.com"
  *               password:
  *                 type: string
  *                 format: password
+ *                 example: "vasypupkin"
+ *               role:
+ *                 type: string
+ *                 default: user
+ *                 example: user
  *     responses:
  *       201:
  *         description: User created successfully
@@ -38,12 +48,22 @@ const router = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
+ *                 user: 
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "67fe5f67a91106d0985d57f9"
+ *                     username:
+ *                       type: string
+ *                       example: Pupkin
+ *                     email:
+ *                       type: string
+ *                       example: "pupkin@email.com"
+ *                 token:
  *                   type: string
- *                 username:
- *                   type: string
- *                 email:
- *                   type: string
+ *                 message:
+ *                   type: string 
  *       400:
  *         description: User already exists
  *         content:
@@ -62,8 +82,7 @@ router.post("/sign-up", signUp)
  * /auth/sign-in:
  *   post:
  *     summary: User authentification
- *     tags:
- *       - Authentification
+ *     tags: [Auth]
  *     description: Checks user
  *     requestBody:
  *       required: true
@@ -78,10 +97,12 @@ router.post("/sign-up", signUp)
  *               username:
  *                 type: string
  *                 description: Username
+ *                 example: "Pupkin"
  *               password:
  *                 type: string
  *                 format: password
  *                 description: User password
+ *                 example: "vasyapupkin"
  *     responses:
  *       200:
  *         description: Authentification successfull

@@ -1,5 +1,7 @@
 import { Router } from "express"
 import { getUsers, createUser, deleteUser, updateUser } from "../controllers/user.controller";
+import { getAuthMiddleware } from "../middlewares/authMiddleware";
+import { UserRoles } from "../models/User";
 
 const router = Router();
 
@@ -43,7 +45,7 @@ const router = Router();
  *                   type: string
  *                   example: "Error message"
  */
-router.get("/", getUsers);
+router.get("/", getAuthMiddleware([UserRoles.admin, UserRoles.moderator]), getUsers);
 
 /**
  * @swagger
@@ -111,6 +113,7 @@ router.post("/", createUser);
  *     summary: Delete a user
  *     description: Deletes a user with the specified userId
  *     tags: [Users]
+ *     security: [{bearerAuth: []}]
  *     requestBody:
  *       required: true
  *       content:
@@ -128,30 +131,19 @@ router.post("/", createUser);
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 username:
- *                   type: string
- *                   example: "Ivan"
- *                 email:
- *                   type: string
- *                   example: "ivan@email.com"
- *                 password:
- *                   type: string
- *                   example: "ivanpassword"
- *                 _id:
- *                   type: string
- *                   example: "64f3b2c4e4b0a1d2c8e4f3b2"
- *       404:
- *         description: User not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "user not found"
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   username:
+ *                     type: string
+ *                     example: "Ivan"
+ *                   email:
+ *                     type: string
+ *                     example: "ivan@email.com"
+ *                   _id:
+ *                     type: string
+ *                     example: "64f3b2c4e4b0a1d2c8e4f3b2"
  *       400:
  *         description: Error deleting user
  *         content:
@@ -163,7 +155,7 @@ router.post("/", createUser);
  *                   type: string
  *                   example: "Error message"
  */
-router.delete("/", deleteUser);
+router.delete("/", getAuthMiddleware([UserRoles.admin]), deleteUser);
 
 /**
  * @swagger
@@ -172,6 +164,7 @@ router.delete("/", deleteUser);
  *     summary: Update a user
  *     description: Updates user information for the specified userId
  *     tags: [Users]
+ *     security: [{ bearerAuth: []}]
  *     requestBody:
  *       required: true
  *       content:
