@@ -26,6 +26,12 @@ const router = Router();
  *                   email:
  *                     type: string
  *                     example: "ivan@email.com"
+ *                   password:
+ *                     type: string
+ *                     example: "ivanpassword"
+ *                   _id:
+ *                     type: string
+ *                     example: "64f3b2c4e4b0a1d2c8e4f3b2"
  *       400:
  *         description: Error retrieving users
  *         content:
@@ -52,7 +58,7 @@ router.get("/", getUsers);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [username, email]
+ *             required: [username, email, password]
  *             properties:
  *               username:
  *                 type: string
@@ -60,6 +66,12 @@ router.get("/", getUsers);
  *               email:
  *                 type: string
  *                 example: "ivan@email.com"
+ *               password:
+ *                 type: string
+ *                 example: "ivanpassword"
+ *               _id:
+ *                 type: string
+ *                 example: "64f3b2c4e4b0a1d2c8e4f3b2"
  *     responses:
  *       201:
  *         description: User created successfully
@@ -74,6 +86,9 @@ router.get("/", getUsers);
  *                 email:
  *                   type: string
  *                   example: "anton@mail.com"
+ *                 password:
+ *                   type: string
+ *                   example: "antonpassword"
  *       400:
  *         description: Invalid input
  *         content:
@@ -102,11 +117,11 @@ router.post("/", createUser);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [email]
+ *             required: [userID]
  *             properties:
- *               userId:
+ *               userID:
  *                 type: string
- *                 example: "ivan@email.com"
+ *                 example: "64f3b2c4e4b0a1d2c8e4f3b2"
  *     responses:
  *       200:
  *         description: User deleted successfully
@@ -121,6 +136,12 @@ router.post("/", createUser);
  *                 email:
  *                   type: string
  *                   example: "ivan@email.com"
+ *                 password:
+ *                   type: string
+ *                   example: "ivanpassword"
+ *                 _id:
+ *                   type: string
+ *                   example: "64f3b2c4e4b0a1d2c8e4f3b2"
  *       404:
  *         description: User not found
  *         content:

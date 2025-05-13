@@ -3,7 +3,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 const swaggerDefinition = {
     openapi: "3.0.0",
     info: {
-        title: "Web technologies server",
+        title: "Web technologies server - MAU",
         version: "1.0.0",
         description: "API documentation for my server"
     }
